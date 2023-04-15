@@ -17,8 +17,7 @@ function App() {
     try {
       setLoading(true)
       setAiCode('// Loading...')
-      const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-      await delay(2000)
+
       const response = await fetch('http://localhost:3001/api/generate', requestOptions);
       if (!response.ok) {
         throw new Error('Network response was not ok.');

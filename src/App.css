@@ -25,6 +25,11 @@
   background-color: #4EFFCD;
 }
 
+.header-title {
+  display: flex;
+  flex-direction: row;
+}
+
 .code-container {
   display: flex;
   flex-direction: row;

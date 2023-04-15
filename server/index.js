@@ -2,8 +2,13 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors')
 const { Configuration, OpenAIApi } = require("openai");
+const CircularJSON = require('circular-json');
+require('dotenv').config()
+
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -21,17 +26,15 @@ app.use(express.static(path.join(__dirname, './public')));
 
 app.post('/api/generate', async (req, res) => {
   const code = Buffer.from(req.body.code).toString('base64');
-  // console.log('got here',code)
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `Base64 decode the input and find any bugs: ${code}`,
     max_tokens: 200,
     temperature: 0,
   });
-  console.log(response.data)
+  // console.log(response.data)
 
-  // const data = response.data.choices[0].text
-  res.status(200).send();
+  res.status(200).send(CircularJSON.stringify(response.data));
 })
 
 app.listen(port, () => {

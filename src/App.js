@@ -7,22 +7,25 @@ function App() {
   const [aiCode, setAiCode] = useState('');
 
   const handleCodeSubmit = async () => {
+    console.log('code: ', code)
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'},
       body: JSON.stringify({ code })
     }
-    setAiCode(code);
-    // try {
-    //   const response = await fetch('', requestOptions);
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not ok.');
-    //   }
-    //   const data = await response.json();
-    //   setAiCode(data.code);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    // setAiCode(code);
+    try {
+      const response = await fetch('http://localhost:3001/api/generate', requestOptions);
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      const data = 'It appears to be a Java code snippet for connecting to ' + '\n' + 'a database and executing a query.'
+      // console.log('response: ', data)
+      setAiCode(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
   const handleExecuteCode = () => {}
 
@@ -33,7 +36,7 @@ function App() {
 
   return (
     <div className="main">
-      <h1 className="title ">AI Bug Hunter</h1>
+      <h1 className="title ">AI Hunter</h1>
       <div className="code-container">
         <CodeInput code={code} setCode={setCode} handleCodeSubmit={handleCodeSubmit} handleClearInput={handleClearInput}/>
         <CodeOutput aiCode={aiCode}/>
@@ -57,7 +60,7 @@ function CodeInput({handleCodeSubmit, code, setCode, handleExecuteCode, handleCl
         onChange={(e) => setCode(e.target.value)}
         value={code}/> */}
       <button className="generate-button" onClick={handleCodeSubmit}>Generate</button>
-      <button className="generate-button" onClick={handleExecuteCode}>Execute code</button>
+      {/* <button className="generate-button" onClick={handleExecuteCode}>Execute code</button> */}
       <button className="generate-button" onClick={handleClearInput}>Clear input</button>
     </div>
   );

@@ -1,6 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import Editor from "@monaco-editor/react";
+import { ReactComponent as Logo } from './target.svg';
 
 function App() {
   const [code, setCode] = useState('');
@@ -37,19 +38,21 @@ function App() {
 
   return (
     <div className="main">
+      {/* <Bug className="bug"/> */}
       <div className="header-title">
-        {/* <svg className="logo" src="./target.svg"/> */}
+        <Logo className="logo"/>
         <h1 className="title ">AI Hunter</h1>
       </div>
+      <p className="description">Paste your code into the input box and AI will suggest a bug fix</p>
       <div className="code-container">
-        <CodeInput code={code} setCode={setCode} handleCodeSubmit={handleCodeSubmit} handleClearInput={handleClearInput} loading={loading}/>
-        <CodeOutput aiCode={aiCode}/>
+        <CodeInput code={code} setCode={setCode} handleCodeSubmit={handleCodeSubmit} loading={loading}/>
+        <CodeOutput aiCode={aiCode} handleClearInput={handleClearInput}/>
       </div>
     </div>
   );
 }
 
-function CodeInput({handleCodeSubmit, code, setCode, handleClearInput, loading}) {
+function CodeInput({handleCodeSubmit, code, setCode, loading}) {
   return (
     <div className="code">
       <Editor
@@ -61,12 +64,12 @@ function CodeInput({handleCodeSubmit, code, setCode, handleClearInput, loading})
         onChange={(val) => setCode(val)}/>
 
       <button className="generate-button" onClick={handleCodeSubmit}>{!loading ? 'Generate' : 'Generating...'}</button>
-      <button className="generate-button" onClick={handleClearInput}>Clear input</button>
+      {/* <button className="generate-button" onClick={handleClearInput}>Clear input</button> */}
     </div>
   );
 }
 
-function CodeOutput({aiCode}) {
+function CodeOutput({aiCode, handleClearInput}) {
 
   return (
     <div className="code">
@@ -76,6 +79,7 @@ function CodeOutput({aiCode}) {
         language="javascript"
         value={aiCode}
         defaultValue="// AI will generate in a second..."/>
+      <button className="generate-button" onClick={handleClearInput}>Clear input</button>
     </div>
   );
 }
